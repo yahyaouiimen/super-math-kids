@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7047c9">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Math Kids</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#77d9ff,#b99aff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.game {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  box-shadow: 0 8px 25px #5554;
+}
+
+h1 { color: #7047c9; font-size: 27px; }
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+  font-weight: bold;
+}
+
+.question {
+  font-size: 42px;
+  color: #333;
+  margin: 30px 0;
+  font-weight: bold;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+button {
+  border: none;
+  border-radius: 15px;
+  padding: 17px;
+  font-size: 23px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #e9e1ff;
+  color: #6039b3;
+}
+
+button:active { transform: scale(.96); }
+
+button:disabled { opacity: .7; }
+
+#message {
+  min-height: 35px;
+  margin: 20px 0;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+#next {
+  background: #20bd7a;
+  color: white;
+  width: 100%;
+  font-size: 18px;
+}
+
+#restart {
+  background: #ffca55;
+  color: #513600;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 17px;
+}
+
+.hidden { display: none; }
+
+</style>
+</head>
+
+<body>
+<div class="game">
+
+  <h1>🌟 Super Math Kids 🌟</h1>
+
+  <div class="info">
+    <span>⭐ Score : <span id="score">0</span></span>
+    <span>Niveau : <span id="level">1</span></span>
+  </div>
+
+  <p id="progress">Question 1</p>
+
+  <div class="question" id="question">5 + 3 = ?</div>
+
+  <div class="answers" id="answers"></div>
+
+  <div id="message">Choisis la bonne réponse ! 😊</div>
+
+  <button id="next" class="hidden" onclick="nextQuestion()">
+    Question suivante ➜
+  </button>
+
+  <button id="restart" onclick="restartGame()">
+    🔄 Recommencer
+  </button>
+
+</div>
+
+<script>
+let score = 0;
+let questionNumber = 0;
+let correctAnswer = 0;
+let answered = false;
+
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateQuestion() {
+  answered = false;
+
+  document.getElementById("next").classList.add("hidden");
+  document.getElementById("message").textContent =
+    "Choisis la bonne réponse ! 😊";
+
+  questionNumber++;
+
+  let level = Math.floor((questionNumber - 1) / 5) + 1;
+  level = Math.min(level, 5);
+
+  document.getElementById("level").textContent = level;
+  document.getElementById("progress").textContent =
+    "Question " + questionNumber;
+
+  let a, b, operator;
+
+  if (level === 1) {
+    operator = "+";
+    a = random(1, 10);
+    b = random(1, 10);
+  } else if (level === 2) {
+    operator = "-";
+    a = random(5, 20);
+    b = random(1, a);
+  } else if (level === 3) {
+    operator = "+";
+    a = random(10, 50);
+    b = random(10, 50);
+  } else if (level === 4) {
+    operator = "×";
+    a = random(2, 10);
+    b = random(2, 10);
+  } else {
+    operator = random(0, 1) ? "×" : "+";
+    a = operator === "×" ? random(2, 10) : random(20, 90);
+    b = operator === "×" ? random(2, 10) : random(10, 50);
+  }
+
+  correctAnswer =
+    operator === "+" ? a + b :
+    operator === "-" ? a - b : a * b;
+
+  document.getElementById("question").textContent =
+    a + " " + operator + " " + b + " = ?";
+
+  let choices = new Set([correctAnswer]);
+
+  while (choices.size < 4) {
+    let wrong = correctAnswer + random(-10, 10);
+    if (wrong >= 0 && wrong !== correctAnswer) {
+      choices.add(wrong);
+    }
+  }
+
+  let shuffled = [...choices].sort(() => Math.random() - 0.5);
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
+
+  shuffled.forEach(value => {
+    let button = document.createElement("button");
+    button.textContent = value;
+    button.onclick = () => checkAnswer(value, button);
+    answers.appendChild(button);
+  });
+}
+
+function checkAnswer(value, button) {
+  if (answered) return;
+  answered = true;
+
+  let buttons = document.querySelectorAll(".answers button");
+
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if (Number(btn.textContent) === correctAnswer) {
+      btn.style.background = "#b9f5d5";
+    }
+  });
+
+  if (value === correctAnswer) {
+    score += 10;
+    document.getElementById("score").textContent = score;
+    document.getElementById("message").textContent =
+      "🎉 Bravo ! Excellente réponse !";
+  } else {
+    button.style.background = "#ffcccc";
+    document.getElementById("message").textContent =
+      "😊 Pas grave ! La réponse est " + correctAnswer;
+  }
+
+  document.getElementById("next").classList.remove("hidden");
+}
+
+function nextQuestion() {
+  generateQuestion();
+}
+
+function restartGame() {
+  score = 0;
+  questionNumber = 0;
+  document.getElementById("score").textContent = 0;
+  generateQuestion();
+}
+
+generateQuestion();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
+</script>
+</body>
+</html>

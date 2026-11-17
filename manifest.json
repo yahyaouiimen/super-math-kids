@@ -1,0 +1,17 @@
+
+{
+  "name": "Super Math Kids",
+  "short_name": "Math Kids",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#77d9ff",
+  "theme_color": "#7047c9",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -14,7 +14,39 @@ Jeu éducatif trilingue (français, arabe, anglais) pour enfants, construit à p
 - PWA : service worker pré-cache tous les fichiers du jeu, pour jouer hors ligne après première ouverture en ligne.
 - Progression locale : `localStorage`, migration automatique des données de la v2 lorsque présentes sur le même navigateur et la même origine.
 
+## Lancer sur ordinateur
 
+Pour tester le service worker, utiliser un serveur HTTP local (pas `file://`) :
+
+```bash
+python -m http.server 8000
+```
+
+Puis ouvrir `http://localhost:8000/`.
+
+## Publier sur GitHub Pages
+
+1. Décompresser le ZIP et placer **le contenu** (dont `index.html`) à la racine du dépôt GitHub, et non le dossier parent.
+2. GitHub → Settings → Pages → Deploy from a branch → `main` → `/ (root)` → Save.
+3. Attendre le déploiement puis ouvrir `https://VOTRE-NOM.github.io/NOM-DU-DEPOT/`.
+4. Pour mettre à jour l'application installée, rouvrir le site avec une connexion Internet puis recharger. Le cache versionné se renouvelle.
+
+## Structure
+
+- `index.html` : structure et navigation.
+- `css/style.css`, `css/v3.css` : design et responsive.
+- `js/storage.js` : sauvegarde et migration v2.
+- `js/i18n3.js` : dictionnaires trilingues et RTL arabe.
+- `js/adventure.js` : mondes, héros, rangs et trophées.
+- `js/minigames.js` : génération des 8 types de questions.
+- `js/voice.js` : synthèse vocale navigateur.
+- `js/sounds.js` : effets sonores.
+- `js/app3.js` : navigation, jeu, scores, espace parents.
+- `sw.js` : fonctionnement hors ligne.
+
+## Notes pédagogiques et confidentialité
+
+La progression n'est pas synchronisée entre appareils. Effacer les données du navigateur efface les scores. Le contrôle parental par calcul est une barrière ludique, **pas** un mécanisme d'authentification sécurisé. Le mode vocal dépend de la plateforme ; certaines voix peuvent nécessiter Internet. La difficulté s'adapte de façon heuristique, pas via un modèle d'IA. Aucun achat ni connexion externe requis.
 
 ## Contrôles qualité recommandés
 

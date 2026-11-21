@@ -24,14 +24,6 @@ python -m http.server 8000
 
 Puis ouvrir `http://localhost:8000`. Le mode hors ligne PWA nécessite une première visite en ligne et un navigateur compatible. Éviter d'ouvrir directement `index.html` via `file://` pour tester le service worker.
 
-## Publier sur GitHub Pages
-
-1. Créer un dépôt GitHub (ou une branche séparée du projet original).
-2. Envoyer **le contenu de ce dossier** à la racine du dépôt (`index.html`, `css/`, `js/`, `assets/`, etc.).
-3. Dans GitHub : **Settings → Pages → Build and deployment → Deploy from a branch**.
-4. Choisir `main` et `/ (root)`, puis enregistrer.
-5. Attendre la publication et ouvrir l'URL affichée par GitHub Pages.
-6. Après une mise à jour, recharger l'application ; incrémenter le nom `CACHE` dans `sw.js` pour les futures versions.
 
 ## Architecture
 

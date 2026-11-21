@@ -1,46 +1,53 @@
-# 🦸 Super Math Kids 2.0 — Académie des super-héros
+# 🦸 Super Math Kids 3.0 — La Ligue des Génies
 
-Jeu éducatif PWA pour les enfants (environ 8 ans), basé sur le projet original **SuperMathKids**.
+Jeu éducatif trilingue (français, arabe, anglais) pour enfants, construit à partir de Super Math Kids 2.0. HTML, CSS et JavaScript natifs, sans framework, compte, publicité, suivi ni serveur.
 
 ## Fonctionnalités
 
-- 6 missions : calcul rapide, multiplication, division exacte, nombre manquant, comparaison, problèmes.
-- 3 langues : français, العربية (RTL), English.
-- 10 questions par mission, 5 questions pour le défi quotidien.
-- XP, 4 rangs, 5 trophées, bonus pour séries de 3 bonnes réponses.
-- Difficulté ajustée au fil des réponses, corrections expliquées.
-- Espace parents : questions, bonnes réponses, missions et résultats par mode.
-- Sauvegarde locale sur l'appareil (localStorage), sans compte ni serveur.
-- PWA avec cache pour jouer hors ligne après un premier chargement réussi.
-- Sons générés localement, désactivables.
+- 5 mondes avec des boss à vaincre (4 bonnes réponses sur 5), déblocage progressif.
+- 8 mini-jeux : calcul éclair, multiplications, divisions, nombre manquant, comparaison, problèmes, boutique (monnaie en dinars tunisiens), horloge (durées en heures).
+- Questions générées localement, difficulté ajustée selon la réussite, correction et explication après chaque réponse.
+- Héros personnalisable : 6 avatars, 5 couleurs, nom facultatif.
+- Récompenses : XP, bonus de série, 8 badges, défi quotidien et bonus de 25 XP.
+- Espace parents : contrôle d'accès par calcul simple, scores, progression par jeu, recommandations, historique et suppression des données.
+- Lecture vocale facultative via Web Speech API : dépend des voix disponibles sur le navigateur/appareil ; **ne fonctionne pas toujours hors ligne**.
+- PWA : service worker pré-cache tous les fichiers du jeu, pour jouer hors ligne après première ouverture en ligne.
+- Progression locale : `localStorage`, migration automatique des données de la v2 lorsque présentes sur le même navigateur et la même origine.
 
-## Tester localement
+## Lancer sur ordinateur
 
-Depuis le dossier du projet :
+Pour tester le service worker, utiliser un serveur HTTP local (pas `file://`) :
 
 ```bash
 python -m http.server 8000
 ```
 
-Puis ouvrir `http://localhost:8000`. Le mode hors ligne PWA nécessite une première visite en ligne et un navigateur compatible. Éviter d'ouvrir directement `index.html` via `file://` pour tester le service worker.
+Puis ouvrir `http://localhost:8000/`.
 
+## Publier sur GitHub Pages
 
-## Architecture
+1. Décompresser le ZIP et placer **le contenu** (dont `index.html`) à la racine du dépôt GitHub, et non le dossier parent.
+2. GitHub → Settings → Pages → Deploy from a branch → `main` → `/ (root)` → Save.
+3. Attendre le déploiement puis ouvrir `https://VOTRE-NOM.github.io/NOM-DU-DEPOT/`.
+4. Pour mettre à jour l'application installée, rouvrir le site avec une connexion Internet puis recharger. Le cache versionné se renouvelle.
 
-- `index.html` : écrans et structure HTML.
-- `css/style.css` : interface responsive.
-- `js/i18n.js` : dictionnaires de traduction.
-- `js/questions.js` : générateur de questions et réponses.
-- `js/storage.js` : sauvegarde de progression.
-- `js/rewards.js` : rangs et trophées.
-- `js/sounds.js` : sons.
-- `js/app.js` : navigation et logique du jeu.
-- `sw.js` : cache PWA.
+## Structure
 
-## Confidentialité
+- `index.html` : structure et navigation.
+- `css/style.css`, `css/v3.css` : design et responsive.
+- `js/storage.js` : sauvegarde et migration v2.
+- `js/i18n3.js` : dictionnaires trilingues et RTL arabe.
+- `js/adventure.js` : mondes, héros, rangs et trophées.
+- `js/minigames.js` : génération des 8 types de questions.
+- `js/voice.js` : synthèse vocale navigateur.
+- `js/sounds.js` : effets sonores.
+- `js/app3.js` : navigation, jeu, scores, espace parents.
+- `sw.js` : fonctionnement hors ligne.
 
-Les progrès restent sur l'appareil dans le stockage du navigateur. Ils ne sont pas synchronisés entre appareils et peuvent disparaître si le stockage du site est effacé. Le bouton « Effacer les progrès » demande confirmation.
+## Notes pédagogiques et confidentialité
 
-## Notes
+La progression n'est pas synchronisée entre appareils. Effacer les données du navigateur efface les scores. Le contrôle parental par calcul est une barrière ludique, **pas** un mécanisme d'authentification sécurisé. Le mode vocal dépend de la plateforme ; certaines voix peuvent nécessiter Internet. La difficulté s'adapte de façon heuristique, pas via un modèle d'IA. Aucun achat ni connexion externe requis.
 
-Les questions sont générées aléatoirement. L'espace parents est un tableau de bord local simple, sans verrou parental. La première version est volontairement sans dépendances externes.
+## Contrôles qualité recommandés
+
+Tester sur Chrome/Edge Android et sur Safari iOS : langues et direction RTL, chaque mini-jeu, boss, défi quotidien, rafraîchissement hors ligne, synthèse vocale, statistiques, migration depuis la v2.

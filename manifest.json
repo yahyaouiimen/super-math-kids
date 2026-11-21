@@ -1,17 +1,1 @@
-
-{
-  "name": "Super Math Kids",
-  "short_name": "Math Kids",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#77d9ff",
-  "theme_color": "#7047c9",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
-  ]
-}
+{"name":"Super Math Kids 2.0 - Académie des super-héros","short_name":"Math Heroes","description":"Six missions de mathématiques en français, arabe et anglais","start_url":"./index.html","scope":"./","display":"standalone","background_color":"#160e3a","theme_color":"#332071","icons":[{"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
